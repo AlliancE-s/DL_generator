@@ -87,7 +87,7 @@ def random_name():
 #     file.write('')
 
 # 生成图片数量以及文字颜色
-num_pic = 1
+num_pic = 1000
 set_color = (125, 125, 125)
 
 for i in range(num_pic):
@@ -105,10 +105,10 @@ for i in range(num_pic):
     filename = temp_filename.zfill(4)
 
     # 印刷随机偏移量，1为x轴，2为y轴
-    # offset1 = random.uniform(-20,20)
-    # offset2 = random.uniform(-20,20)
-    offset1 = 0
-    offset2 = 0
+    offset1 = random.uniform(-20,20)
+    offset2 = random.uniform(-20,20)
+    # offset1 = 0
+    # offset2 = 0
 
     # 内容
     name = random_name()
@@ -1287,9 +1287,9 @@ for i in range(num_pic):
 
 
     elif typeCode == 11:
-        hight = 33
-        width = 28
-        adjust = 3
+        hight = 80
+        width = 65
+        adjust = 8
         font = ImageFont.truetype(font_path, 60)
         set_color = (0,0,0)
 
@@ -1309,7 +1309,7 @@ for i in range(num_pic):
         point_x = 710
         point_y = 470
         draw.text((point_x + offset1, point_y + offset2), cartype, font=font, fill=set_color)
-        length = len(cartype) * 30
+        length = len(cartype) * 40
         point_all = getFourPoint(back_point, point_x, point_y, length, hight, offset1, offset2, adjust)
         with open("DL_output/Label.txt", "a", encoding='utf-8') as file:
             file.write(
@@ -1321,18 +1321,31 @@ for i in range(num_pic):
         point_x = 710
         point_y = 617
         draw.text((point_x + offset1, point_y + offset2), (str(penalty) + '分'), font=font, fill=set_color)
-        length = 256
+        length = len(str(penalty)) * 40 + 65
         point_all = getFourPoint(back_point, point_x, point_y, length, hight, offset1, offset2, adjust)
         with open("DL_output/Label.txt", "a", encoding='utf-8') as file:
             file.write(
-                '{"transcription": "证号' + cid + '", "points": ' + str(penalty) + '分' + ', "difficult": false}, ')
+                '{"transcription": "累计记分' + str(penalty) + '分' + '", "points": ' + str(
+                        point_all) + ', "difficult": false}, ')
+
+        # 签发日期
+        back_point = [462, 780]
+        point_x = 777
+        point_y = 770
+        draw.text((point_x + offset1, point_y + offset2), str(issue_date), font=font, fill=set_color)
+        length = 328
+        point_all = getFourPoint(back_point, point_x, point_y, length, hight, offset1, offset2, adjust)
+        with open("DL_output/Label.txt", "a", encoding='utf-8') as file:
+            file.write(
+                '{"transcription": "初次领证日期' + str(issue_date) + '", "points": ' + str(
+                     point_all) + ', "difficult": false}, ')
 
         # 证号
-        back_point = [462, 480]
-        point_x = 710
-        point_y = 470
+        back_point = [50, 1040]
+        point_x = 180
+        point_y = 1030
         draw.text((point_x + offset1, point_y + offset2), cid, font=font, fill=set_color)
-        length = 256
+        length = 620
         point_all = getFourPoint(back_point, point_x, point_y, length, hight, offset1, offset2, adjust)
         with open("DL_output/Label.txt", "a", encoding='utf-8') as file:
             file.write(
@@ -1341,9 +1354,9 @@ for i in range(num_pic):
 
 
         # 性别
-        back_point = [298, 134]
-        point_x = 336
-        point_y = 132
+        back_point = [50, 1155]
+        point_x = 180
+        point_y = 1145
         draw.text((point_x + offset1, point_y + offset2), sex, font=font, fill=set_color)
         length = len(sex) * width
         point_all = getFourPoint(back_point, point_x, point_y, length, hight, offset1, offset2, adjust)
@@ -1351,10 +1364,22 @@ for i in range(num_pic):
             file.write(
                 '{"transcription": "性别' + sex + '", "points": ' + str(point_all) + ', "difficult": false}, ')
 
+        # 生日
+        back_point = [500, 1155]
+        point_x = 700
+        point_y = 1145
+        draw.text((point_x + offset1, point_y + offset2), str(birthday), font=font, fill=set_color)
+        length = 330
+        point_all = getFourPoint(back_point, point_x, point_y, length, hight, offset1, offset2, adjust)
+        with open("DL_output/Label.txt", "a", encoding='utf-8') as file:
+            file.write(
+                '{"transcription": "出生日期' + str(birthday) + '", "points": ' + str(
+                    point_all) + ', "difficult": false}, ')
+
         # 国籍
-        back_point = [392, 131]
-        point_x = 460
-        point_y = 130
+        back_point = [50, 1270]
+        point_x = 180
+        point_y = 1260
         draw.text((point_x + offset1, point_y + offset2), '中国', font=font, fill=set_color)
         length = len("中国") * width
         point_all = getFourPoint(back_point, point_x, point_y, length, hight, offset1, offset2, adjust)
@@ -1362,50 +1387,26 @@ for i in range(num_pic):
             file.write(
                 '{"transcription": "国籍中国", "points": ' + str(point_all) + ', "difficult": false}, ')
 
-        # 地址
-        back_point = [61, 172]
-        point_x = 118
-        point_y = 168
-        draw.text((point_x + offset1, point_y + offset2), address, font=font, fill=set_color)
-        length = len(address) * width
-        point_all = getFourPoint(back_point, point_x, point_y, length, hight, offset1, offset2, adjust)
-        with open("DL_output/Label.txt", "a", encoding='utf-8') as file:
-            file.write(
-                '{"transcription": "住址' + address + '", "points": ' + str(point_all) + ', "difficult": false}, ')
-
-        # 生日
-        back_point = [186, 246]
-        point_x = 261
-        point_y = 244
-        draw.text((point_x + offset1, point_y + offset2), str(birthday), font=font, fill=set_color)
-        length = 131
+        #档案编号
+        back_point = [500, 1270]
+        point_x = 700
+        point_y = 1260
+        draw.text((point_x + offset1, point_y + offset2), str(file_code), font=font, fill=set_color)
+        length = 400
         point_all = getFourPoint(back_point, point_x, point_y, length, hight, offset1, offset2, adjust)
         with open("DL_output/Label.txt", "a", encoding='utf-8') as file:
             file.write(
                 '{"transcription": "出生日期' + str(birthday) + '", "points": ' + str(
                     point_all) + ', "difficult": false}, ')
 
-        # 签发日期
-        back_point = [186, 285]
-        point_x = 296
-        point_y = 283
-        draw.text((point_x + offset1, point_y + offset2), str(issue_date), font=font, fill=set_color)
-        length = 131
-        point_all = getFourPoint(back_point, point_x, point_y, length, hight, offset1, offset2, adjust)
-        with open("DL_output/Label.txt", "a", encoding='utf-8') as file:
-            file.write(
-                '{"transcription": "初次领证日期' + str(issue_date) + '", "points": ' + str(
-                    point_all) + ', "difficult": false}, ')
-
-
 
         # 有效日期
-        back_point = [59, 372]
-        point_x = 135
-        point_y = 370
+        back_point = [50, 1385]
+        point_x = 250
+        point_y = 1375
         draw.text((point_x + offset1, point_y + offset2), str(startValid) + " 至 " + str(endValid), font=font,
                   fill=set_color)
-        length = 300
+        length = 738
         point_all = getFourPoint(back_point, point_x, point_y, length, hight, offset1, offset2, adjust)
         with open("DL_output/Label.txt", "a", encoding='utf-8') as file:
             file.write(
@@ -1413,7 +1414,47 @@ for i in range(num_pic):
                     point_all) + ', "difficult": false}')
 
 
+    elif typeCode == 12:
+        hight = 80
+        width = 65
+        adjust = 8
+        font = ImageFont.truetype(font_path, 60)
+        set_color = (0,0,0)
 
+        # 地址
+        back_point = [50, 390]
+        point_x = 257
+        point_y = 380
+        draw.text((point_x + offset1, point_y + offset2), address, font=font, fill=set_color)
+        length = len(address) * width
+        point_all = getFourPoint(back_point, point_x, point_y, length, hight, offset1, offset2, adjust)
+        with open("DL_output/Label.txt", "a", encoding='utf-8') as file:
+            file.write(
+                '{"transcription": "住址' + address + '", "points": ' + str(point_all) + ', "difficult": false}, ')
+
+        # 签发机关
+        back_point = [50, 560]
+        point_x = 257
+        point_y = 550
+        draw.text((point_x + offset1, point_y + offset2), address + '公安局', font=font, fill=set_color)
+        length = (len(address) + 3) * width
+        point_all = getFourPoint(back_point, point_x, point_y, length, hight, offset1, offset2, adjust)
+        with open("DL_output/Label.txt", "a", encoding='utf-8') as file:
+            file.write(
+                '{"transcription": "发证机关' + address + '公安局' + '", "points": ' + str(point_all) + ', "difficult": false}, ')
+
+        #记录
+        back_point = [50, 728]
+        point_x = 257
+        point_y = 718
+        draw.text((point_x + offset1, point_y + offset2), str(cartype + '自' + str(issue_date.year) + '年' + str(issue_date.month) + '月' + str(issue_date.day)) + '日起。', font=font, fill=set_color)
+        length = (len(cartype) - 2) * 40 + 330 + (5 * width)
+        point_all = getFourPoint(back_point, point_x, point_y, length, hight, offset1, offset2, adjust)
+        with open("DL_output/Label.txt", "a", encoding='utf-8') as file:
+            file.write(
+                '{"transcription": "' + cartype + '自' + str(issue_date.year) + '年' + str(
+                    issue_date.month) + '月' + str(issue_date.day) + '日起。' + '", "points": ' + str(
+                    point_all) + ', "difficult": false}')
 
     bk_img = np.array(img_pil)
 
@@ -1428,8 +1469,8 @@ for i in range(num_pic):
         file.write('D:\文件\JH\DLgenerator\DL_output\\' + filename + ".jpg\t1\n")
 
 
-    cv2.imshow(filename, bk_img)
-    cv2.waitKey()
+    # cv2.imshow(filename, bk_img)
+    # cv2.waitKey()
     cv2.imwrite("DL_output/" + filename + ".jpg", bk_img)
 
 # gbk_trans_utf8('DL_output/Label.txt')
